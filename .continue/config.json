@@ -1,0 +1,15 @@
+{
+  "mcpServers": [
+    {
+      "name": "web",
+      "type": "stdio",
+      "command": "node",
+      "args": ["./dist/index.js"],
+      "env": {
+        "TAVILY_API_KEY": "${env:TAVILY_API_KEY}",
+        "SERPAPI_KEY": "${env:SERPAPI_KEY}",
+        "DEFAULT_PROVIDER": "${env:DEFAULT_PROVIDER}"
+      }
+    }
+  ]
+}
