@@ -82,6 +82,60 @@ Tip: Absolute paths are recommended. If your repo lives elsewhere, update the `a
 
 3) Start a new chat in Claude Desktop and verify the `web` tool appears. Call `web.search` with a query (e.g., `latest AI research news`). If you see a missing key error, set `TAVILY_API_KEY` directly in the MCP server env block above.
 
+## Use in GitHub Copilot (Agent Mode)
+1) Build this project so `dist/index.js` exists:
+```bash
+npm install
+npm run build
+```
+
+2) Register the MCP server in Copilot
+
+Option A — via UI (if available in your Copilot build):
+- Open the Copilot Chat panel in VS Code.
+- Open its settings/gear menu and look for “Model Context Protocol” or “MCP Servers”.
+- Add a new server with:
+  - Name: `web`
+  - Type: `stdio`
+  - Command: `node`
+  - Args: `./dist/index.js`
+  - Env:
+    - `TAVILY_API_KEY`: `${env:TAVILY_API_KEY}`
+    - `DEFAULT_PROVIDER`: `tavily` (optional)
+    - `SERPAPI_KEY`: `${env:SERPAPI_KEY}` (optional)
+
+Option B — via Settings JSON (fallback):
+- Open Command Palette → “Preferences: Open Settings (JSON)” and add:
+```json
+{
+  "github.copilot.chat.mcpServers": [
+    {
+      "name": "web",
+      "type": "stdio",
+      "command": "node",
+      "args": ["./dist/index.js"],
+      "env": {
+        "TAVILY_API_KEY": "${env:TAVILY_API_KEY}",
+        "DEFAULT_PROVIDER": "tavily",
+        "SERPAPI_KEY": "${env:SERPAPI_KEY}"
+      }
+    }
+  ]
+}
+```
+Note: Copilot’s MCP setting key may vary by version. If you don’t see this key in the Settings UI, search Copilot settings for “MCP” and adapt accordingly.
+
+3) Make your key available to VS Code:
+```bash
+export TAVILY_API_KEY="your_tavily_key_here"
+export DEFAULT_PROVIDER="tavily"   # optional
+code .
+```
+
+4) Reload VS Code and test in Copilot Chat
+- Ask: “Use the web.search tool to find the latest AI research news.”
+- Copilot should call `web.search` and return results. If you see a missing key error, ensure VS Code inherited your environment variables or set them directly in the MCP server env block above.
+
 ## Client configuration (example)
 For an MCP client that loads a local server over stdio, add an entry similar to:
 ```json
