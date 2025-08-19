@@ -142,6 +142,51 @@ For an MCP client that loads a local server over stdio, add an entry similar to:
 {
   "mcpServers": {
     "web": {
+## Use in VS Code via .vscode/mcp.json
+Some MCP-enabled VS Code clients can automatically discover servers defined in `.vscode/mcp.json` and make their tools available in chat.
+
+Prereqs
+- Build artifacts exist at `dist/index.js`:
+  - `npm install && npm run build`
+- API keys in `.env` at the workspace root (loaded by the server via `dotenv`):
+  - `TAVILY_API_KEY=...` (required for Tavily)
+  - `SERPAPI_KEY=...` (optional, for SerpAPI)
+  - `DEFAULT_PROVIDER=tavily` (optional)
+
+What `.vscode/mcp.json` does
+- This repo includes `.vscode/mcp.json` with a server named “Web Search”:
+
+  ```jsonc
+  {
+    "servers": {
+      "Web Search": {
+        "type": "stdio",
+        "command": "node",
+        "args": ["./dist/index.js"]
+      }
+    }
+  }
+  ```
+
+How to use it in VS Code
+1) Open this folder in VS Code after building and setting your `.env`.
+2) Use a chat extension that supports MCP and `.vscode/mcp.json` discovery (for example, some builds of GitHub Copilot Chat with MCP support or other MCP-enabled extensions). When supported, the “Web Search” server will be registered automatically.
+3) In the chat panel, expand Tools/Servers and select the `web.search` tool, or ask the assistant to “use web.search to …”. Example arguments:
+
+   ```json
+   { "query": "latest AI research news", "num": 3, "provider": "tavily" }
+   ```
+
+Troubleshooting
+- If the server doesn’t appear, your chat client may not yet support `.vscode/mcp.json`. Use the Continue config in this README or register the server manually in your client with:
+  - Command: `node`
+  - Args: `./dist/index.js`
+  - Env: set `TAVILY_API_KEY` (and optionally `SERPAPI_KEY`, `DEFAULT_PROVIDER`)
+- If you see “Missing TAVILY_API_KEY,” ensure your key is present in `.env` or exported in the VS Code environment.
+- You can also smoke test outside of chat:
+  - Run the VS Code task “MCP: Search Web” (Terminal > Run Task…)
+  - Or in a terminal: `npm run search -- --query "your query" --provider tavily --num 3`
+
       "command": "node",
       "args": ["./dist/index.js"],
     "env": { "TAVILY_API_KEY": "${env:TAVILY_API_KEY}", "SERPAPI_KEY": "${env:SERPAPI_KEY}" }

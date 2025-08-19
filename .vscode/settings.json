@@ -1,4 +1,3 @@
 {
-  "continue.configUri": "${workspaceFolder}/.continue/config.json",
-  "python-envs.pythonProjects": []
+  "continue.configUri": "${workspaceFolder}/.continue/config.json"
 }

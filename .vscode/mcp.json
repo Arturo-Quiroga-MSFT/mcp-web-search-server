@@ -1,0 +1,12 @@
+{
+	// This server reads API keys from .env via dotenv (see src/index.ts: `import 'dotenv/config'`).
+	// Put TAVILY_API_KEY, SERPAPI_KEY, and optionally DEFAULT_PROVIDER in the workspace root .env file.
+	"servers": {
+		"Web Search": {
+			"type": "stdio",
+			"command": "node",
+			"args": ["./dist/index.js"]
+		}
+	}
+}
+

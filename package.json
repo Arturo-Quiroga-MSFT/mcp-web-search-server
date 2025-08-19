@@ -10,7 +10,9 @@
     "start": "node dist/index.js",
   "typecheck": "tsc --noEmit",
   "smoke": "tsx scripts/smoke.ts",
-  "smoke:js": "node dist/scripts/smoke.js"
+  "smoke:js": "node dist/scripts/smoke.js",
+  "search": "tsx scripts/query.ts",
+  "search:js": "node dist/scripts/query.js"
   },
   "engines": {
     "node": ">=18.18.0"
