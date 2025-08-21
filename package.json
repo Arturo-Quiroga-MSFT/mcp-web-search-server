@@ -4,15 +4,18 @@
   "private": true,
   "type": "module",
   "description": "An MCP server that provides a web.search tool backed by SerpAPI.",
+  "bin": {
+    "web-mcp-server": "./bin/web-mcp-server.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
-  "typecheck": "tsc --noEmit",
-  "smoke": "tsx scripts/smoke.ts",
-  "smoke:js": "node dist/scripts/smoke.js",
-  "search": "tsx scripts/query.ts",
-  "search:js": "node dist/scripts/query.js"
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts",
+    "smoke:js": "node dist/scripts/smoke.js",
+    "search": "tsx scripts/query.ts",
+    "search:js": "node dist/scripts/query.js"
   },
   "engines": {
     "node": ">=18.18.0"

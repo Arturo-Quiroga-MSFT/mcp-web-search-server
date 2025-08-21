@@ -1,0 +1,11 @@
+# Exclude dev and source files from VSIX
+node_modules
+src
+**/*.map
+**/*.ts
+**/.DS_Store
+**/.git/**
+**/.github/**
+**/.vscode/**
+**/test/**
+README.md

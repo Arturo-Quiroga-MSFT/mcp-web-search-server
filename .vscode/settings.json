@@ -1,7 +1,11 @@
 {
   "continue.configUri": "${workspaceFolder}/.continue/config.json",
   "[json]": {
-    "editor.quickSuggestions": false,
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
     "editor.suggest.showWords": false,
     "editor.suggest.showSnippets": true,
     "editor.formatOnSave": true,
@@ -27,5 +31,6 @@
         }
       }
     ]
-  }
+  },
+  "python-envs.pythonProjects": []
 }

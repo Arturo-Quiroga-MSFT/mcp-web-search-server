@@ -1,0 +1,109 @@
+{
+    "name": "mcp-web-search",
+    "displayName": "MCP Web Search Server Setup",
+    "description": "Adds a command to register the Web MCP server (stdio) into GitHub Copilot Chat user settings.",
+    "version": "0.0.2",
+    "publisher": "Arturo-Quiroga-MSFT",
+    "author": {
+        "name": "ARTURO QUIROGA",
+        "url": "https://github.com/Arturo-Quiroga-MSFT"
+    },
+    "keywords": [
+        "mcp",
+        "web",
+        "search",
+        "tavily",
+        "serpapi",
+        "copilot",
+        "chat"
+    ],
+    "icon": "media/icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Arturo-Quiroga-MSFT/mcp-web-search-server",
+        "directory": "vscode-extension"
+    },
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "mcpWebSearch.register",
+                "title": "MCP Web Search: Register in Copilot Settings"
+            }
+        ],
+        "chatParticipants": [
+            {
+                "id": "mcp-web-search.participant",
+                "name": "web",
+                "fullName": "Web Search",
+                "description": "Search the web via Tavily or SerpAPI.",
+                "isSticky": false,
+                "commands": [
+                    {
+                        "name": "websearch",
+                        "description": "Search the web (provider configurable in Settings)."
+                    }
+                ]
+            }
+        ],
+        "configuration": {
+            "title": "MCP Web Search",
+            "properties": {
+                "mcpWebSearch.defaultProvider": {
+                    "type": "string",
+                    "enum": [
+                        "tavily",
+                        "serpapi"
+                    ],
+                    "default": "tavily",
+                    "description": "Default provider for the chat participant searches."
+                },
+                "mcpWebSearch.tavilyApiKey": {
+                    "type": "string",
+                    "markdownDescription": "Tavily API key used by the chat participant. If empty, the participant will not call Tavily.",
+                    "default": ""
+                },
+                "mcpWebSearch.serpapiKey": {
+                    "type": "string",
+                    "markdownDescription": "SerpAPI key used by the chat participant when provider=serpapi.",
+                    "default": ""
+                },
+                "mcpWebSearch.searchDepth": {
+                    "type": "string",
+                    "enum": [
+                        "basic",
+                        "advanced"
+                    ],
+                    "default": "basic",
+                    "description": "Tavily search depth."
+                },
+                "mcpWebSearch.maxResults": {
+                    "type": "number",
+                    "default": 5,
+                    "minimum": 1,
+                    "maximum": 20,
+                    "description": "Max results returned by the participant."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "package": "vsce package"
+    },
+    "devDependencies": {
+        "@types/node": "^24.3.0",
+        "@types/vscode": "^1.90.0",
+        "typescript": "^5.5.4",
+        "@vscode/vsce": "^2.22.0",
+        "vsce": "^2.15.0"
+    }
+}

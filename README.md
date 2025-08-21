@@ -33,6 +33,47 @@ npm run dev
 npm start
 ```
 
+## Global CLI command (optional)
+You can install a small global command so you don’t have to hard-code absolute paths in VS Code settings.
+
+1) Build and link the CLI
+```bash
+npm install
+npm run build
+npm link
+```
+
+2) Verify it’s on your PATH
+```bash
+web-mcp-server --version
+web-mcp-server --help
+```
+
+Notes
+- The command starts the MCP server over stdio and will block until the client disconnects (normal for MCP servers).
+- If you see “command not found”, ensure your npm global bin is on PATH (for example `~/.npm-global/bin` on macOS) and re-open your terminal.
+
+### PATH setup on macOS (zsh)
+If `web-mcp-server` isn’t found after `npm link`, your npm global bin may not be on PATH.
+
+1) Set a user-level npm prefix and add it to PATH:
+```bash
+npm config set prefix ~/.npm-global
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+2) Re-link (if needed) and verify:
+```bash
+cd /Users/arturoquiroga/GITHUB/WEB-MCP-SERVER
+npm link
+web-mcp-server --version
+```
+
+Tips
+- You can check the global npm bin folder with: `npm bin -g`
+- If VS Code can’t find the command when launched from the Dock, try launching it from a terminal (so it inherits PATH) or reference the absolute command path in your settings.
+
 ## Use in VS Code (Continue extension)
 1) Install Continue – Coding AI Assistant in VS Code and reload.
 
@@ -124,6 +165,27 @@ Option B — via Settings JSON (fallback):
 }
 ```
 Note: Copilot’s MCP setting key may vary by version. If you don’t see this key in the Settings UI, search Copilot settings for “MCP” and adapt accordingly.
+
+Option C — use the global CLI command (no absolute paths):
+- After `npm link`, reference the `web-mcp-server` command in user settings:
+```json
+{
+  "github.copilot.chat.mcpServers": [
+    {
+      "name": "web",
+      "type": "stdio",
+      "command": "web-mcp-server",
+      "args": [],
+      "env": {
+        "TAVILY_API_KEY": "${env:TAVILY_API_KEY}",
+        "DEFAULT_PROVIDER": "tavily",
+        "SERPAPI_KEY": "${env:SERPAPI_KEY}"
+      }
+    }
+  ]
+}
+```
+This avoids hard-coding your local filesystem paths and works across workspaces.
 
 3) Make your key available to VS Code:
 ```bash
